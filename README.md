@@ -8,8 +8,8 @@ Because alt-tabbing to Spotify is for people who don't use Neovim.
 
 When you toggle it open, a window pops up in your chosen corner with the album
 art and current track. After a few seconds it shrinks down to a compact bar
-showing the song, artist, and timestamp. It expands again automatically on every
-song change.
+showing the song, artist, progress, and timestamp. It expands again automatically
+on every song change.
 
 ![mini-ui](assets/mini-ss.png)
 
