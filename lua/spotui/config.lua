@@ -6,7 +6,7 @@ M.options = {
   window = {
     width = 30,
     expanded_height = 16, -- tall: album art + track info
-    compact_height = 3,   -- slim: just name, artist, time
+    compact_height = 3,   -- slim: name, artist, progress/time
     expand_duration = 1500, -- ms before shrinking down
   },
     highlights = {
