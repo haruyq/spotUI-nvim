@@ -87,19 +87,33 @@ local function trim_artist(artist, max_len)
   return artist:sub(1, max_len - 3) .. '...'
 end
 
+local function progress_bar(progress_ms, duration_ms, width)
+  duration_ms = duration_ms or 0
+  progress_ms = progress_ms or 0
+  if duration_ms <= 0 then
+    return ('-'):rep(width)
+  end
+  local ratio = math.min(math.max(progress_ms / duration_ms, 0), 1)
+  local filled = math.floor(width * ratio)
+  return ('='):rep(filled) .. ('-'):rep(width - filled)
+end
+
 -- Builds the 3 line view after minimizing
 local function compact_lines(track)
   if not track then
     return { '  ♪  Nothing playing' }
   end
-  local icon = track.is_playing and '▶' or '||'
+  local icon = track.is_playing and '||' or '▶ '
   local name = clean_name(track.name)
-  local max = config.options.window.width - 9
+  local max = config.options.window.width - 6
   local artist = trim_artist(track.artist, max)
+  local progress = fmt_time(track.progress_ms)
+  local duration = fmt_time(track.duration_ms)
+  local bar_width = math.max(config.options.window.width - #progress - #duration - 17, 1)
   return {
     ('  %s  %s'):format(icon, name),
-    ('     %s'):format(artist),
-    ('     %s / %s'):format(fmt_time(track.progress_ms), fmt_time(track.duration_ms)),
+    ('      %s'):format(artist),
+    ('      %s / %s  [%s]'):format(progress, duration, progress_bar(track.progress_ms, track.duration_ms, bar_width)),
   }
 end
 
@@ -176,9 +190,10 @@ local function on_tick()
     if state.current_track and state.current_track.name == track.name then
       local old_secs = math.floor(state.current_track.progress_ms / 1000)
       local new_secs = math.floor(track.progress_ms / 1000)
+      local old_playing = state.current_track.is_playing
       state.current_track.progress_ms = track.progress_ms
       state.current_track.is_playing  = track.is_playing
-      if not state.expanded and win_valid() and old_secs ~= new_secs then
+      if not state.expanded and win_valid() and (old_secs ~= new_secs or old_playing ~= track.is_playing) then
         set_lines(compact_lines(state.current_track))
       end
       return
