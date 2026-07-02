@@ -201,7 +201,15 @@ local function on_tick()
 
     -- New song
     state.current_track = track
-    if win_valid() then expand(track) end
+    if win_valid() then
+      if config.options.window.expand_on_track_change then
+        expand(track)
+      else
+        state.expanded = false
+        set_lines(compact_lines(track))
+        vim.api.nvim_win_set_config(state.win, get_win_cfg(config.options.window.compact_height))
+      end
+    end
   end)
 end
 -- Creates buffer once when plugin started.

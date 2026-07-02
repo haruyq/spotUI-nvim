@@ -8,6 +8,7 @@ M.options = {
     expanded_height = 16, -- tall: album art + track info
     compact_height = 3,   -- slim: name, artist, progress/time
     expand_duration = 1500, -- ms before shrinking down
+    expand_on_track_change = true, -- show tall view when song changes
   },
     highlights = {
     background = 'NormalFloat', -- control window background

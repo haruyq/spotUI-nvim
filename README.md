@@ -70,6 +70,7 @@ With [lazy.nvim](https://github.com/folke/lazy.nvim):
       window = {
         width = 30,
         expand_duration = 1500,
+        expand_on_track_change = true,
       }
     })
   end
@@ -96,6 +97,7 @@ require('spotui').setup({
     expanded_height = 16,    -- height when album art is visible
     compact_height = 3,      -- height after minimizing
     expand_duration = 1500,  -- ms before shrinking to compact view
+    expand_on_track_change = true, -- show album art when the song changes
   },
   highlights = {
     background = 'NormalFloat',  -- window background highlight group
